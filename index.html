@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMAN RESIZE — Precision File Scaler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.r2.css?v=3">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="scan-sweep" aria-hidden="true"></div>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="reg-mark" aria-hidden="true"></span>
+    <span class="tag">PRECISION&nbsp;FILE&nbsp;SCALER</span>
+    <span class="sep" aria-hidden="true">/</span>
+    <span class="tag dim">UNIT&nbsp;01</span>
+  </div>
+  <div class="topbar-right">
+    <div class="wordmark">
+      <span class="wm-a">AMAN</span><span class="wm-b">RESIZE</span>
+    </div>
+    <div class="wm-sub">v1.0 · LOCAL ENGINE</div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-ruler" aria-hidden="true"></div>
+  <h1 class="hero-title">
+    <span class="line l1">SET&nbsp;THE&nbsp;SIZE.</span>
+    <span class="line l2">WE&nbsp;HIT&nbsp;IT<em>.</em></span>
+  </h1>
+  <p class="hero-lede">
+    Drop a <b>PDF</b>, <b>JPG</b>, <b>PNG</b> or <b>WEBP</b>. Type the exact weight you need in
+    <b>KB</b> or <b>MB</b>. The scanner iterates quality and scale until the file lands on target —
+    entirely inside your browser. <span class="nohost">Nothing is uploaded anywhere.</span>
+  </p>
+</section>
+
+<!-- ============ CONSOLE ============ -->
+<main class="console">
+
+  <!-- ---- LEFT: INPUT ---- -->
+  <section class="panel panel-input">
+    <div class="panel-head">
+      <span class="idx">01</span>
+      <h2>SOURCE&nbsp;INTAKE</h2>
+      <span class="panel-line" aria-hidden="true"></span>
+    </div>
+
+    <div id="drop" class="dropzone" tabindex="0" role="button"
+         aria-label="Upload files: click, drag and drop, or paste">
+      <span class="br tl" aria-hidden="true"></span>
+      <span class="br tr" aria-hidden="true"></span>
+      <span class="br bl" aria-hidden="true"></span>
+      <span class="br br2" aria-hidden="true"></span>
+      <div class="dz-inner">
+        <div class="dz-glyph" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M24 34V12M24 12l-8 8M24 12l8 8"/>
+            <path d="M8 30v6a2 2 0 002 2h28a2 2 0 002-2v-6"/>
+          </svg>
+        </div>
+        <div class="dz-title">DROP&nbsp;FILES&nbsp;HERE</div>
+        <div class="dz-sub">or <u>browse</u> · or paste from clipboard</div>
+        <div class="dz-types">PDF · JPG · JPEG · PNG · WEBP</div>
+      </div>
+      <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" hidden>
+    </div>
+
+    <div class="panel-head sub">
+      <span class="idx">02</span>
+      <h2>TARGET&nbsp;WEIGHT</h2>
+      <span class="panel-line" aria-hidden="true"></span>
+    </div>
+
+    <div class="target-row">
+      <div class="field">
+        <label for="sizeInput">HOW&nbsp;MANY?</label>
+        <input type="number" id="sizeInput" value="200" min="1" step="1" inputmode="decimal" autocomplete="off">
+      </div>
+      <div class="unit-toggle" role="radiogroup" aria-label="Unit">
+        <button type="button" class="unit active" data-unit="KB" role="radio" aria-checked="true">KB</button>
+        <button type="button" class="unit" data-unit="MB" role="radio" aria-checked="false">MB</button>
+      </div>
+    </div>
+
+    <div class="preset-row">
+      <span class="preset-lab">QUICK</span>
+      <button type="button" class="chip" data-v="50" data-u="KB">50 KB</button>
+      <button type="button" class="chip" data-v="100" data-u="KB">100 KB</button>
+      <button type="button" class="chip" data-v="200" data-u="KB">200 KB</button>
+      <button type="button" class="chip" data-v="500" data-u="KB">500 KB</button>
+      <button type="button" class="chip" data-v="1" data-u="MB">1 MB</button>
+      <button type="button" class="chip" data-v="2" data-u="MB">2 MB</button>
+    </div>
+
+    <label class="opt" for="padToggle">
+      <input type="checkbox" id="padToggle" checked>
+      <span class="box" aria-hidden="true"></span>
+      <span class="opt-txt">Pad up to the exact target when a file is <b>already smaller</b>
+        <span class="opt-note">(for forms with a minimum size)</span></span>
+    </label>
+
+    <button id="runBtn" class="run" disabled>
+      <span class="run-lab">SCAN&nbsp;&amp;&nbsp;RESIZE</span>
+      <span class="run-arrow" aria-hidden="true">→</span>
+    </button>
+    <div id="hint" class="hint">Awaiting source file…</div>
+  </section>
+
+  <!-- ---- RIGHT: READOUT ---- -->
+  <aside class="panel panel-read">
+    <div class="panel-head">
+      <span class="idx">03</span>
+      <h2>READOUT</h2>
+      <span class="panel-line" aria-hidden="true"></span>
+    </div>
+
+    <div class="gauge-wrap">
+      <svg class="gauge" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="g-track" cx="100" cy="100" r="82"/>
+        <circle class="g-fill" cx="100" cy="100" r="82"/>
+      </svg>
+      <div class="gauge-face">
+        <div class="g-val" id="gVal">—</div>
+        <div class="g-unit" id="gUnit">IDLE</div>
+      </div>
+      <div class="gauge-ticks" aria-hidden="true"></div>
+    </div>
+
+    <dl class="stats">
+      <div class="stat"><dt>ORIGINAL</dt><dd id="sOrig">—</dd></div>
+      <div class="stat"><dt>TARGET</dt><dd id="sTarget">—</dd></div>
+      <div class="stat"><dt>ACHIEVED</dt><dd id="sFinal">—</dd></div>
+      <div class="stat"><dt>REDUCTION</dt><dd id="sDelta">—</dd></div>
+      <div class="stat"><dt>QUALITY</dt><dd id="sQual">—</dd></div>
+      <div class="stat"><dt>PASSES</dt><dd id="sIter">—</dd></div>
+    </dl>
+
+    <div class="log-head">ENGINE&nbsp;LOG</div>
+    <div id="log" class="log" role="status" aria-live="polite"><div class="log-line dim">&gt; engine idle</div></div>
+  </aside>
+</main>
+
+<!-- ============ RESULTS ============ -->
+<section class="results-wrap" id="resultsWrap" hidden>
+  <div class="panel-head standalone">
+    <span class="idx">04</span>
+    <h2>OUTPUT&nbsp;TRAY</h2>
+    <span class="panel-line" aria-hidden="true"></span>
+    <button id="clearBtn" class="clear">CLEAR</button>
+  </div>
+  <div id="results" class="results"></div>
+</section>
+
+<!-- ============ NOTES ============ -->
+<section class="notes">
+  <div class="note">
+    <span class="n-idx">i</span>
+    <p><b>Images</b> are re-encoded as JPEG. The engine binary-searches quality first, then steps
+      resolution down only if quality alone cannot reach the target.</p>
+  </div>
+  <div class="note">
+    <span class="n-idx">i</span>
+    <p><b>PDFs</b> are rasterised page-by-page, so text stops being selectable. That is the trade-off
+      for guaranteeing a hard size ceiling.</p>
+  </div>
+  <div class="note">
+    <span class="n-idx">i</span>
+    <p><b>Physics applies.</b> A 40&nbsp;MB photo will not become a crisp 5&nbsp;KB file. The engine gets
+      as close as it can and reports exactly what it achieved.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footbar">
+  <div class="foot-left">
+    <span class="reg-mark sm" aria-hidden="true"></span>
+    <span>ALL&nbsp;PROCESSING&nbsp;LOCAL · NO&nbsp;UPLOAD · NO&nbsp;TRACKING</span>
+  </div>
+  <div class="foot-right">
+    <span class="signature">ARMAN</span>
+  </div>
+</footer>
+
+<script src="vendor/pdf.r2.min.js?v=3"></script>
+<script src="vendor/jspdf.umd.r2.min.js?v=3"></script>
+<script src="app.r2.js?v=3"></script>
+</body>
+</html>
